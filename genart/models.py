@@ -22,6 +22,7 @@ class Model():
 class BaseCell():
     def __init__(self, width, height):
         self.value = random.randint(0, 1)
+        self.next_value = 0
         self.width = width
         self.height = height
 
@@ -47,14 +48,14 @@ class CellGrid(Model):
         pass
     
     def update(self):
-        next_generation = [[BaseCell(self.ch, self.cw) for i in range(self.width)] for j in range(self.height)]
+        for x in range(self.height):
+            for y in range(self.width):
+                self.board[x][y].next_value = self.rule(self.board[x][y],
+                                                        self.neighbors(x, y))
 
         for x in range(self.height):
             for y in range(self.width):
-                next_generation[x][y].value = self.rule(self.board[x][y],
-                                                        self.neighbors(x, y))
-
-        self.board = next_generation
+                self.board[x][y].value = self.board[x][y].next_value
 
     def render(self, screen):
         screen.fill(GRAY)
