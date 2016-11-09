@@ -39,6 +39,6 @@ class BrianBrain(CellGrid):
 
             
 
-grid = BrianBrain(250, 150, 2, 2)
+grid = BrianBrain(500, 300, 1, 1)
 iterate_on_model(grid, max_iter=3)
 start(grid)

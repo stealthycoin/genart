@@ -20,4 +20,3 @@ def start(model, w=500, h=300):
                 break
     finally:
         pygame.quit()
-            
