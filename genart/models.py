@@ -1,6 +1,7 @@
 import random
 import pygame
 from genart import BLACK, WHITE, GRAY
+from genart.decorators import cached
 
 class Model():
     def __init__(self):
@@ -33,16 +34,22 @@ class CellGrid(Model):
         self.height = height
         self.cw = cw
         self.ch = ch
-        self.board = [[BaseCell(ch, cw) for i in range(width)] for j in range(height)]
+        self.board = [[self.create_cell(ch, cw) for i in range(width)] for j in range(height)]
 
+    def create_cell(self, *args, **kwargs):
+        return BaseCell(*args, **kwargs)
+        
     def in_bounds(self, x, y):
-        return x >= 0 and x < self.width and y > 0 and y < self.height
-    
+        return x >= 0 and x < self.width and y >= 0 and y < self.height
+
+    @cached
     def neighbors(self, x, y):
+        results = []
         for i in range(x-1, x+2):
             for j in range(y-1, y+2):
                 if self.in_bounds(j, i) and (i != x or j != y):
-                    yield self.board[i][j]
+                    results.append(self.board[i][j])
+        return results
 
     def rule(self, prev, neighbors):
         pass
